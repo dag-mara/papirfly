@@ -20,11 +20,25 @@ export const IMAGE_0: IImageData = {
 	height: 500
 };
 
+export const IMAGE_1: IImageData = {
+	id: "image1",
+	src: "res/image_1.png",
+	width: 800,
+	height: 500
+};
+
+export const IMAGE_2: IImageData = {
+	id: "image2",
+	src: "res/image_2.png",
+	width: 800,
+	height: 500
+};
+
 export const LOGO: IImageData = {
 	id: "logo",
-	src: "res/logo_acme.png",
-	width: 400,
-	height: 180
+	src: "res/logo_acme_rebrand.png",
+	width: 582,
+	height: 184
 };
 
 export const STAR: IImageData = {
@@ -48,6 +62,8 @@ export const OVERLAY: IImageData = {
  */
 export const MANIFEST: Array<IImageData> = [
 	IMAGE_0,
+	IMAGE_1,
+	IMAGE_2,
 	LOGO,
 	STAR,
     OVERLAY

@@ -1,9 +1,10 @@
 import * as $ from "jquery";
-import * as AssetEvent from "../events/AssetEvent";
+//import * as AssetEvent from "../events/AssetEvent";
 import * as img from "../data/ImageData";
 import * as ts from "../data/TextStyles";
 import { applyTextStyle } from "../utils/TextStyleUtils";
 import { AssetManager } from "../managers/AssetManager";
+import { BucketContainer } from "../containers/BucketContainer";
 import { HorizontalDivide } from "../containers/HorizontalDivide";
 import { Margin } from "../utils/Margin";
 import "createjs";
@@ -18,10 +19,10 @@ export class FrontPage extends createjs.Container {
     private headline: createjs.Text;
     private body: createjs.Text;
     private div: HorizontalDivide;
-    private bucketImage: createjs.Bitmap;
-    private bucketHeading: createjs.Text;
-    private bucketBody: createjs.Text;
     private overlayImage: createjs.Bitmap;
+    private bucketContainer1: BucketContainer;
+    private bucketContainer2: BucketContainer;
+    private bucketContainer3: BucketContainer;
 
     private _width: number;
     private _height: number;
@@ -40,6 +41,29 @@ export class FrontPage extends createjs.Container {
         this.addElements();
         this.addOverlay();
         this.putDefaultContent();
+
+        // Create three instances of BucketContainer
+        this.bucketContainer1 = new BucketContainer(img.IMAGE_0.id, "CONSULTING", "Nunc posuere nibh sed urna posuere rutrum. Ut eu turpis id arcu consequat sagittis. Pellentesque at purus velit. Suspendisse sit amet massa augue. In sit amet arcu ac quam sagittis ornare sit amet ac elit. Donec tempus eu nulla ac pretium. Vivamus laoreet finibus leo. Donec ut massa aliquam, tincidunt nulla ut, mollis nibh. ");
+       
+        this.bucketContainer2 = new BucketContainer(img.IMAGE_1.id, "PRODUCTION ", "Vivamus condimentum nulla at ipsum dapibus, sed ullamcorper massa ultricies. Morbi ornare diam non lectus interdum, id blandit arcu tincidunt. Maecenas sit amet interdum ante, eget dignissim magna. Integer luctus vitae felis sit amet venenatis. Maecenas sed porttitor massa, facilisis gravida nisi.");
+
+       this.bucketContainer3 = new BucketContainer(img.IMAGE_2.id, "SUPPORT", "Cras tristique magna ex, ac eleifend nulla sodales ac. Fusce vitae semper urna. Donec risus neque, aliquam quis dignissim vel, vestibulum eu lorem. Nunc ac enim fermentum, auctor leo eu, ullamcorper felis. Ut tristique dolor dignissim consequat accumsan. Aliquam suscipit consequat aliquam.");
+        
+
+        // Set positions for each bucket container
+        this.bucketContainer1.x = 0;
+        this.bucketContainer1.y = 0;
+
+        this.bucketContainer2.x = 207;
+        this.bucketContainer2.y = 0;
+
+        this.bucketContainer3.x = 416;
+        this.bucketContainer3.y = 0;
+
+        // Add bucket containers to the stage
+        this.addChild(this.bucketContainer1);
+        this.addChild(this.bucketContainer2);
+        this.addChild(this.bucketContainer3);
     }
 
 
@@ -67,19 +91,9 @@ export class FrontPage extends createjs.Container {
         this.div = new HorizontalDivide();
         this.addChild(this.div);
 
-        // Bucket Image
-        this.bucketImage = new createjs.Bitmap(this.am.getAsset(img.IMAGE_0.id));
-        this.addChild(this.bucketImage);
-
-        // Bucket Header
-        this.bucketHeading = new createjs.Text();
-        applyTextStyle(this.bucketHeading, ts.BUCKET_HEADLINE);
-        this.addChild(this.bucketHeading);
-
-        // Bucket Body
-        this.bucketBody = new createjs.Text();
-        applyTextStyle(this.bucketBody, ts.BUCKET_BODY);
-        this.addChild(this.bucketBody);
+        this.addChild(this.bucketContainer1);
+        this.addChild(this.bucketContainer2);
+        this.addChild(this.bucketContainer3);
     }
 
     /**
@@ -99,15 +113,11 @@ export class FrontPage extends createjs.Container {
     putDefaultContent(): void {
 
         // Headline
-        this.headline.text = "Partnerships That Last";
+        this.headline.text = "Creating Lasting Partnerships";
 
         // Body
         this.body.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere est sodales est lobortis interdum. Cras a turpis ullamcorper elit dignissim mattis. Mauris dignissim aliquet est, vel vestibulum nisi fermentum vel. Fusce sit amet dolor eu tellus tincidunt pellentesque et vitae mauris. Praesent convallis magna sem. Sed vel mi nunc. In porta justo urna, ac tristique mauris lobortis et. Nam imperdiet lacinia augue eu vehicula. Duis nec consequat libero. Aenean et sapien volutpat, ultricies ante sit amet, ornare leo. Proin orci felis, lacinia ac commodo vitae, suscipit eget ipsum. Sed egestas justo non dolor molestie, eu iaculis enim lobortis. Suspendisse id ipsum vel lectus luctus viverra. Donec quam neque, fringilla quis justo sagittis, malesuada vestibulum leo. Nam eget lorem at elit vestibulum molestie nec quis est.";
 
-        // Bucket
-        this.bucketImage.image = this.am.getAsset(img.IMAGE_0.id);
-        this.bucketHeading.text = "CONSULTING";
-        this.bucketBody.text = "Nunc posuere nibh sed urna posuere rutrum. Ut eu turpis id arcu consequat sagittis. Pellentesque at purus velit. Suspendisse sit amet massa augue. In sit amet arcu ac quam sagittis ornare sit amet ac elit. Donec tempus eu nulla ac pretium. Vivamus laoreet finibus leo. Donec ut massa aliquam, tincidunt nulla ut, mollis nibh.";
     }
 
     /**
@@ -139,28 +149,14 @@ export class FrontPage extends createjs.Container {
         this.body.lineWidth = this.width - m.horizontal;
 
         // Divide
-        this.div.x = m.left;
-        this.div.y = 40;
+        this.div.x = 197;
+        this.div.y = 388;
+        this.div.width = 285;
 
-        // Image
-        const bucketWidth: number = 190;
-        const imageData: img.IImageData | null = img.getImageDataById(img.IMAGE_0.id);
-        const imageScale: number = (imageData) ? bucketWidth / imageData.width : 1;
-
-        this.bucketImage.x = m.left;
-        this.bucketImage.y = 432;
-        this.bucketImage.scaleX = imageScale;
-        this.bucketImage.scaleY = imageScale;
-
-        // Header
-        this.bucketHeading.x = m.left;
-        this.bucketHeading.y = this.bucketImage.y + 146;
-        this.bucketHeading.lineWidth = bucketWidth;
-
-        // Body
-        this.bucketBody.x = m.left;
-        this.bucketBody.y = this.bucketImage.y + 175;
-        this.bucketBody.lineWidth = bucketWidth;
+        // BucketContainer
+        this.bucketContainer1.width = 50;
+        this.bucketContainer2.width = 100;
+        this.bucketContainer3.width = 100;
 
         // Update Stage
         if (this.stage)
