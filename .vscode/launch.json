@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch debugger",
+            "port": 9222,
+            "url": "http://localhost:9000/",
+            "webRoot": "${workspaceRoot}/src",
+            "sourceMaps": true,
+            "timeout": 15000
+        }
+    ]
+}
