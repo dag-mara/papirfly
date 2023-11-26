@@ -1,5 +1,3 @@
-import * as $ from "jquery";
-import * as AssetEvent from "../events/AssetEvent";
 import * as img from "../data/ImageData";
 import * as ts from "../data/TextStyles";
 import { applyTextStyle } from "../utils/TextStyleUtils";

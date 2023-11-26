@@ -1,5 +1,4 @@
 import * as $ from "jquery";
-//import * as AssetEvent from "../events/AssetEvent";
 import * as img from "../data/ImageData";
 import * as ts from "../data/TextStyles";
 import { applyTextStyle } from "../utils/TextStyleUtils";
@@ -23,10 +22,11 @@ export class FrontPage extends createjs.Container {
     private bucketContainer1: BucketContainer;
     private bucketContainer2: BucketContainer;
     private bucketContainer3: BucketContainer;
+    private stars: createjs.Bitmap[] = [];
+    private numberOfStars: number;
 
     private _width: number;
     private _height: number;
-
 
     //===== CONSTRUCTOR ====================================//
     constructor() {
@@ -71,6 +71,7 @@ export class FrontPage extends createjs.Container {
     /**
      * Instantiate elements and add them to the container.
      */
+
     addElements(): void {
 
         // Logo
@@ -91,10 +92,26 @@ export class FrontPage extends createjs.Container {
         this.div = new HorizontalDivide();
         this.addChild(this.div);
 
+        //Bucket Container
         this.addChild(this.bucketContainer1);
         this.addChild(this.bucketContainer2);
         this.addChild(this.bucketContainer3);
+
+        //Star
+        var xPos = 476;
+        this.numberOfStars = 4;
+
+        for (let i = 0; i < this.numberOfStars; i++) {
+            const star = new createjs.Bitmap(this.am.getAsset(img.STAR.id));
+            star.x = xPos;
+            star.y = 870;
+            xPos += 43;
+
+            this.stars.push(star);
+            this.addChild(star);
+        }
     }
+
 
     /**
      * Adds an overlay of the desired end result.  Aids developer in ensuring
@@ -154,7 +171,7 @@ export class FrontPage extends createjs.Container {
         this.div.width = 285;
 
         // BucketContainer
-        this.bucketContainer1.width = 50;
+        this.bucketContainer1.width = 100;
         this.bucketContainer2.width = 100;
         this.bucketContainer3.width = 100;
 
@@ -166,8 +183,23 @@ export class FrontPage extends createjs.Container {
 
     //===== EVENT LISTENERS ================================//
     private onNumStarsChange(e: Event = null) {
+        const selectedValue = (e.currentTarget as HTMLInputElement).value;
+        const numberOfSelectedStars = parseInt(selectedValue);
 
-        // Update stage display
+        for (let i = 0; i < this.numberOfStars; i++) {
+            const star = this.stars[i]; 
+            if (star) {
+                star.visible = i < numberOfSelectedStars;
+    
+                const starWidth: number = 34;
+                const starScale: number = starWidth / img.STAR.width;
+    
+                star.scaleX = starScale;
+                star.scaleY = starScale;
+            }
+        }
+    
+        // Update stage display if needed
         this.updateSizeProperties();
     }
 
